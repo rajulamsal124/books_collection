@@ -1,20 +1,20 @@
 <?php
-// application/controllers/Books.php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-require_once APPPATH . 'services/Books_service.php';
+require_once APPPATH . 'services/BooksService.php'; 
 
 class Books extends CI_Controller {
+
     public function __construct() {
         parent::__construct();
         $this->load->model('Book_model');
-        $this->load->library('form_validation');
-        $this->load->helper('url');
-        $this->load->helper('form');
     }
+
     public function index() {
         $data['books'] = $this->Book_model->get_books();
         $this->load->view('books_list', $data);
     }
+
     public function get_books() {
         $books = $this->Book_model->get_books();
 
@@ -39,9 +39,8 @@ class Books extends CI_Controller {
 
     public function create_book() {
         $data = json_decode(file_get_contents('php://input'), true);
-        $bookValidationService = new BookValidationService();
-
-        if ($bookValidationService->validate($data)) {
+        $booksService = new BooksService(); 
+        if ($booksService->validate_book($data)) {
             $this->Book_model->create_book($data);
             echo json_encode(['status' => 'success']);
         } else {
@@ -51,9 +50,8 @@ class Books extends CI_Controller {
 
     public function update_book($id) {
         $data = json_decode(file_get_contents('php://input'), true);
-        $bookValidationService = new BookValidationService();
-
-        if ($bookValidationService->validate($data)) {
+        $booksService = new BooksService(); 
+        if ($booksService->validate_book($data)) {
             $this->Book_model->update_book($id, $data);
             echo json_encode(['status' => 'success']);
         } else {
@@ -69,5 +67,6 @@ class Books extends CI_Controller {
     public function new_book() {
         $this->load->view('create_book');
     }
+
 }
 ?>
