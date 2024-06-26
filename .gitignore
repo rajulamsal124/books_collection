@@ -1,1 +1,11 @@
+# CodeIgniter specific
+/application/config/*
+!/application/config/database.php
+!/application/config/routes.php
+
+# Editor specific
 .DS_Store
+
+# Logs and backups
+/log/
+/backups/
