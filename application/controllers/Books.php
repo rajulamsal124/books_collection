@@ -5,9 +5,12 @@ require_once APPPATH . 'services/BooksService.php';
 
 class Books extends CI_Controller {
 
+    private $booksService;
+
     public function __construct() {
         parent::__construct();
         $this->load->model('Book_model');
+        $this->booksService = new BooksService(); 
     }
 
     public function index() {
@@ -39,8 +42,8 @@ class Books extends CI_Controller {
 
     public function create_book() {
         $data = json_decode(file_get_contents('php://input'), true);
-        $booksService = new BooksService(); 
-        if ($booksService->validate_book($data)) {
+
+        if ($this->booksService->validate_book($data)) {
             $this->Book_model->create_book($data);
             echo json_encode(['status' => 'success']);
         } else {
@@ -50,8 +53,8 @@ class Books extends CI_Controller {
 
     public function update_book($id) {
         $data = json_decode(file_get_contents('php://input'), true);
-        $booksService = new BooksService(); 
-        if ($booksService->validate_book($data)) {
+
+        if ($this->booksService->validate_book($data)) {
             $this->Book_model->update_book($id, $data);
             echo json_encode(['status' => 'success']);
         } else {

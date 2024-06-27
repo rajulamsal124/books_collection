@@ -1,9 +1,6 @@
 <?php
-
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 class BooksService {
-
     public function validate_book($data) {
         if (empty($data['title']) || strlen($data['title']) < 3) {
             return false;
@@ -21,7 +18,6 @@ class BooksService {
         if (empty($data['description']) || strlen($data['description']) < 100) {
             return false;
         }
-
         return true;
     }
 }

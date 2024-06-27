@@ -31,7 +31,7 @@
         .table tbody tr td {
             display: flex;
             justify-content: space-between;
-            align-items: center; /* Center align the content */
+            align-items: center; 
             padding: 0.75rem;
             border-top: none;
         }
@@ -45,7 +45,7 @@
             background-color: #ececec;
         }
         .table tbody tr td .btn {
-            display: inline-flex; /* Use inline-flex to keep icons in line */
+            display: inline-flex; 
             align-items: center;
             justify-content: center;
             width: 32px;
@@ -106,7 +106,7 @@
                                 <td data-label="Published Year">{{ book.published_year }}</td>
                                 <td data-label="Description">{{ book.description }}</td>
                                 <td data-label="Actions" >
-                                    <a :href="'/books/' + book.id" class="btn btn-sm btn-info">
+                                    <a :href="'/books/' + book.id" class="btn btn-sm btn-info mx-auto">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <button @click="deleteBook(book.id)" class="btn btn-sm btn-danger">
