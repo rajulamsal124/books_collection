@@ -37,7 +37,8 @@
                         <div v-if="errors.description" class="invalid-feedback">{{ errors.description }}</div>
                     </div>
                     <button type="submit" class="btn btn-primary">Update</button>
-                </form>
+                    <a href="/books" class="btn btn-secondary">Back to Book List</a>
+                </form>  
             </div>
         </div>
     </div>

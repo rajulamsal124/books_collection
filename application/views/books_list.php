@@ -79,7 +79,7 @@
     </style>
 </head>
 <body>
-    <div class="container mt-5">
+    <div class="container-fluid mt-5">
         <div id="app">
             <div>
                 <h1>Book Collection</h1>
@@ -98,18 +98,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="book in books" :key="book.id">
+                            <tr v-for="book in paginatedBooks" :key="book.id">
                                 <td data-label="ID">{{ book.id }}</td>
                                 <td data-label="Title">{{ book.title }}</td>
                                 <td data-label="Author">{{ book.author }}</td>
                                 <td data-label="Genre">{{ book.genre }}</td>
                                 <td data-label="Published Year">{{ book.published_year }}</td>
                                 <td data-label="Description">{{ book.description }}</td>
-                                <td data-label="Actions" >
-                                    <a :href="'/books/' + book.id" class="btn btn-sm btn-info mx-auto">
+                                <td data-label="Actions">
+                                    <a :href="'/books/' + book.id" class="btn btn-sm btn-info m-1">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <button @click="deleteBook(book.id)" class="btn btn-sm btn-danger">
+                                    <button @click="deleteBook(book.id)" class="btn btn-sm btn-danger m-1">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </td>
@@ -117,6 +117,19 @@
                         </tbody>
                     </table>
                 </div>
+                <nav>
+                    <ul class="pagination">
+                        <li class="page-item" :class="{ disabled: currentPage === 1 }">
+                            <button class="page-link" @click="prevPage">Previous</button>
+                        </li>
+                        <li class="page-item" v-for="page in totalPages" :key="page" :class="{ active: currentPage === page }">
+                            <button class="page-link" @click="goToPage(page)">{{ page }}</button>
+                        </li>
+                        <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+                            <button class="page-link" @click="nextPage">Next</button>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
@@ -127,7 +140,19 @@
         new Vue({
             el: '#app',
             data: {
-                books: <?= json_encode($books) ?>
+                books: <?= json_encode($books) ?>,
+                currentPage: 1,
+                itemsPerPage: 5
+            },
+            computed: {
+                totalPages() {
+                    return Math.ceil(this.books.length / this.itemsPerPage);
+                },
+                paginatedBooks() {
+                    const start = (this.currentPage - 1) * this.itemsPerPage;
+                    const end = start + this.itemsPerPage;
+                    return this.books.slice(start, end);
+                }
             },
             methods: {
                 deleteBook(id) {
@@ -140,6 +165,19 @@
                                 }
                             });
                     }
+                },
+                prevPage() {
+                    if (this.currentPage > 1) {
+                        this.currentPage--;
+                    }
+                },
+                nextPage() {
+                    if (this.currentPage < this.totalPages) {
+                        this.currentPage++;
+                    }
+                },
+                goToPage(page) {
+                    this.currentPage = page;
                 }
             }
         });
